@@ -1,0 +1,60 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Wand2 } from 'lucide-react';
+
+const Home: React.FC = () => {
+  const [prompt, setPrompt] = React.useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (prompt.trim()) {
+      navigate('/builder', { state: { prompt } });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+      <div className="max-w-2xl w-full">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <Wand2 className="w-12 h-12 text-blue-400" />
+          </div>
+          <h1 className="text-4xl font-bold text-white mb-4">
+            Create Your Dream Website
+          </h1>
+          <p className="text-lg text-gray-300">
+            Describe your website idea, and we'll help you bring it to life.
+          </p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="bg-gray-800 rounded-lg shadow-xl p-6">
+          <div className="mb-4">
+            <label
+              htmlFor="prompt"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
+              What kind of website do you want to create?
+            </label>
+            <textarea
+              id="prompt"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Describe your website idea in detail..."
+              className="w-full h-32 px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Generate Website
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
