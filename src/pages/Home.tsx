@@ -1,15 +1,17 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Wand2 } from 'lucide-react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Wand2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const Home: React.FC = () => {
-  const [prompt, setPrompt] = React.useState('');
+  const [prompt, setPrompt] = React.useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (prompt.trim()) {
-      navigate('/builder', { state: { prompt } });
+      navigate("/builder", { state: { prompt } });
     }
   };
 
@@ -20,15 +22,18 @@ const Home: React.FC = () => {
           <div className="flex justify-center mb-4">
             <Wand2 className="w-12 h-12 text-blue-400" />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-3xl font-bold text-white mb-4">
             Create Your Dream Website
           </h1>
           <p className="text-lg text-gray-300">
             Describe your website idea, and we'll help you bring it to life.
           </p>
         </div>
-        
-        <form onSubmit={handleSubmit} className="bg-gray-800 rounded-lg shadow-xl p-6">
+
+        <form
+          onSubmit={handleSubmit}
+          className="bg-gray-800 rounded-lg shadow-xl p-6"
+        >
           <div className="mb-4">
             <label
               htmlFor="prompt"
@@ -36,7 +41,7 @@ const Home: React.FC = () => {
             >
               What kind of website do you want to create?
             </label>
-            <textarea
+            <Textarea
               id="prompt"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -45,12 +50,14 @@ const Home: React.FC = () => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Generate Website
-          </button>
+          <div className="flex justify-end mt-5">
+            <Button
+              type="submit"
+              className="w-fit bg-blue-600 text-white py-2 px-4 rounded-lg  hover:bg-blue-700 transition-colors"
+            >
+              Generate Website
+            </Button>
+          </div>
         </form>
       </div>
     </div>
