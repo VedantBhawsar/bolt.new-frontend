@@ -5,11 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 const Home: React.FC = () => {
-  const [prompt, setPrompt] = React.useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: {
+    preventDefault: () => void;
+    target: [
+      {
+        value: string;
+      }
+    ];
+  }) => {
+    event.preventDefault();
+    const prompt = event.target[0].value;
     if (prompt.trim()) {
       navigate("/builder", { state: { prompt } });
     }
@@ -32,7 +39,7 @@ const Home: React.FC = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-gray-800 rounded-lg shadow-xl p-6"
+          className="bg-gray-800  shadow-xl p-6"
         >
           <div className="mb-4">
             <label
@@ -43,8 +50,7 @@ const Home: React.FC = () => {
             </label>
             <Textarea
               id="prompt"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
+              name="prompt"
               placeholder="Describe your website idea in detail..."
               className="w-full h-32 px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400"
               required
@@ -53,7 +59,7 @@ const Home: React.FC = () => {
           <div className="flex justify-end mt-5">
             <Button
               type="submit"
-              className="w-fit bg-blue-600 text-white py-2 px-4 rounded-lg  hover:bg-blue-700 transition-colors"
+              className="w-fit bg-blue-600 text-white py-2 px-4   hover:bg-blue-700 transition-colors"
             >
               Generate Website
             </Button>
