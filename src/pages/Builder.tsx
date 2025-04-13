@@ -16,6 +16,10 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { SaveProjectDialog } from "@/components/SaveProjectDialog";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Save } from "lucide-react";
 
 const Builder: React.FC = () => {
   const location = useLocation();
@@ -27,6 +31,9 @@ const Builder: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = React.useState<FileItem[]>([]);
   const webcontainer = useWebContainer();
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const projectId = location.state?.projectId as string;
 
   const getFileContent = (file: FileItem) => {
     return file.content;
@@ -46,8 +53,8 @@ const Builder: React.FC = () => {
       .map((step) => {
         updateHappened = true;
         if (step?.type === StepType.CreateFile) {
-          let parsedPath = step.path?.split("/") ?? []; 
-          let currentFileStructure = [...originalFiles]; 
+          let parsedPath = step.path?.split("/") ?? [];
+          let currentFileStructure = [...originalFiles];
           const finalAnswerRef = currentFileStructure;
 
           let currentFolder = "";
@@ -240,6 +247,19 @@ const Builder: React.FC = () => {
         >
           <StepList loading={loading} steps={steps} />
           <ChatWidget prompt={prompt} handleMessageSend={handleMessageSend} />
+
+          {isAuthenticated && (
+            <div className="mt-4">
+              <Button
+                className="w-full"
+                onClick={() => setSaveDialogOpen(true)}
+                variant="outline"
+              >
+                <Save className="mr-2 h-4 w-4" />
+                Save Project
+              </Button>
+            </div>
+          )}
         </motion.div>
 
         {/* Main Content */}
@@ -304,6 +324,14 @@ const Builder: React.FC = () => {
           </Card>
         </motion.div>
       </div>
+
+      <SaveProjectDialog
+        open={saveDialogOpen}
+        onOpenChange={setSaveDialogOpen}
+        prompt={prompt}
+        files={files}
+        projectId={projectId}
+      />
     </motion.div>
   );
 };
